@@ -1,0 +1,12 @@
+/* Optionnel : dans chat.component.css */
+#scrollMe {
+  height: 300px;
+  overflow-y: auto;
+  border: 1px solid #ccc;
+  padding: 10px;
+  background-color: #f9f9f9;
+}
+/* chat.component.css */
+.scroll-messages {
+  scroll-behavior: smooth;
+}
