@@ -3,6 +3,9 @@ import user from '../models/user.js'
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import { io,onlineUser } from '../index.js';
+import dotenv from 'dotenv';
+dotenv.config();
+
 export const SignUp = async (req,res)=>{
   try{
   const { username,email,password,phone } = req.body;
@@ -17,7 +20,7 @@ export const SignUp = async (req,res)=>{
   if( await user.findOne({username}) ){
      return res.status(400).json({ error: 'username déjà utilisé.' });
   }
-  const newuser=new user({
+  const newuser = new user({
     username,
     password: hashedpwd,
     email,
@@ -27,7 +30,7 @@ export const SignUp = async (req,res)=>{
    await newuser.save();
 
 
-res.status(201).json({msg:'created seccesfully'});
+res.status(201).json({ msg : 'Created Seccesfully'});
 }catch(err){
    res.status(400).json({ error: err.message });
 }
@@ -54,7 +57,7 @@ export const Signin = async(req,res)=>{
       return res.status(400).json({ msg: "Mot de passe incorrect." });
          }
  
-    const token = jwt.sign({ id: existingUser._id }, "SECRET_KEY", { expiresIn: "7m" });
+    const token = jwt.sign({ id: existingUser._id }, process.env.JWT_SECRET , { expiresIn: "7m" });
    res.cookie('auth_token', token, {
       httpOnly: true,
       secure: process.env.NODE_ENV === 'production',

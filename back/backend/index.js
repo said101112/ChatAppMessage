@@ -6,11 +6,12 @@ import cookieParser from 'cookie-parser';
 import cors from 'cors';
 import authRoutes from './routes/index.js';
 import http from 'http'
+import dotenv from 'dotenv';
+dotenv.config();
 
 const server = http.createServer(app);
 
 // Middleware pour lire les cookies
-
 app.use(cors({
   origin: 'http://localhost:4200',
   credentials: true
@@ -22,7 +23,7 @@ const PORT=3000;
 
 app.use(express.json());
 
-mongoose.connect('mongodb://localhost:27017/chat', {
+mongoose.connect(process.env.MONGO_URI, {
   useNewUrlParser: true,
   useUnifiedTopology: true
 }).then(() => console.log("✅ MongoDB connecté"))

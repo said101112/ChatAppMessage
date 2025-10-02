@@ -1,5 +1,6 @@
 import jwt from "jsonwebtoken";
-
+import dotenv from 'dotenv'
+dotenv.config();
 export const protect = (req, res, next) => {
   try {
     const token = req.cookies?.auth_token;
@@ -7,7 +8,7 @@ export const protect = (req, res, next) => {
       return res.status(401).json({ message: "Non autorisé" });
     }
 
-    const decoded = jwt.verify(token, 'SECRET_KEY');
+    const decoded = jwt.verify(token,process.env.JWT_SECRET );
     req.user = { _id: decoded.id };
     next();
   } catch (error) {
