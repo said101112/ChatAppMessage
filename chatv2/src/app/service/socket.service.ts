@@ -14,7 +14,7 @@ export class SocketService {
     console.log('🔌 Tentative de connexion au socket avec userId:', userId);
 
     this.socket = io('http://localhost:3000', {
-      query: { userId },
+       withCredentials: true
     });
 
     this.socket.on('connect', () => {

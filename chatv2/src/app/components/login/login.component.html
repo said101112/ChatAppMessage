@@ -1,89 +1,326 @@
-<div class="min-h-screen bg-sky-100 flex items-center justify-center px-4">
-  <div class="bg-white rounded-lg shadow-xl p-8 w-full max-w-md">
-    <!-- Titre -->
-    <h2 class="text-2xl font-bold text-sky-700 mb-6 text-center">
-      {{ isLogin ? 'Connexion' : 'Inscription' }}
-    </h2>
-
-    
-    <form (ngSubmit)="onSubmit()" #authForm="ngForm">
-      
-      <div *ngIf="!isLogin" class="mb-4">
-        <label class="block text-sm font-medium text-gray-700">Nom</label>
-        <input
-          type="text"
-          name="username"
-          [(ngModel)]="formData.username"
-          required
-          #username="ngModel"
-          class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:ring-sky-500 focus:border-sky-500"
-        />
-        
-      </div>
-
-      
-      <div *ngIf="!isLogin" class="mb-4">
-        <label class="block text-sm font-medium text-gray-700">Téléphone</label>
-        <input
-          type="text"
-          name="phone"
-          [(ngModel)]="formData.phone"
-          pattern="^0[0-9]{9}$"
-          required
-          #phone="ngModel"
-          class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:ring-sky-500 focus:border-sky-500"
-        />
+<div class="h-screen bg-gray-50 flex">
   
+  <div class="hidden lg:flex flex-1 bg-gradient-to-br from-green-500 to-green-600 items-center justify-center p-12">
+    <div class="text-white text-center max-w-md">
+      <div class="p-4 w-24 h-24 bg-white bg-opacity-20 rounded-3xl shadow-lg mb-8 mx-auto flex items-center justify-center">
+        <img src="Johanchalibert-Mac-Osx-Yosemite-Messages.512.png" width="60" alt="Icon Chat" class="filter brightness-0 invert" />
       </div>
-      <div class="mb-4">
-        <label class="block text-sm font-medium text-gray-700">Email</label>
-        <input
-          type="email"
-          name="email"
-          [(ngModel)]="formData.email"
-          email
-          required
-          #email="ngModel"
-          class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:ring-sky-500 focus:border-sky-500"
-        />
-       
+      <h1 class="text-4xl font-bold mb-4">FlowCom</h1>
+      <p class="text-lg opacity-90">Connectez-vous pour chatter avec vos amis et collègues en temps réel.</p>
+      <div class="mt-8 flex justify-center space-x-4">
+        <div class="w-3 h-3 bg-white rounded-full opacity-60"></div>
+        <div class="w-3 h-3 bg-white rounded-full opacity-30"></div>
+        <div class="w-3 h-3 bg-white rounded-full opacity-30"></div>
       </div>
+    </div>
+  </div>
 
-      <!-- Mot de passe -->
-      <div class="mb-4">
-        <label class="block text-sm font-medium text-gray-700">Mot de passe</label>
-        <input
-          type="password"
-          name="password"
-          [(ngModel)]="formData.password"
-          required
-          minlength="6"
-          #password="ngModel"
-          class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:ring-sky-500 focus:border-sky-500"
-        />
-    
+  <!-- Côté droit - Formulaire -->
+  <div class="flex-1 flex items-center justify-center p-8">
+    <div class="w-full max-w-md">
+      
+      <!-- Logo mobile -->
+      <div class="lg:hidden text-center mb-8">
+        <div class="p-3 w-16 h-16 bg-green-500 rounded-2xl shadow-sm mx-auto mb-4 flex items-center justify-center">
+          <img src="Johanchalibert-Mac-Osx-Yosemite-Messages.512.png" width="40" alt="Icon Chat" class="filter brightness-0 invert" />
+        </div>
+        <h2 class="text-2xl font-bold text-gray-900">WhatsApp Clone</h2>
       </div>
 
-     
-      <button
-        type="submit"
-        class="w-full bg-sky-500 hover:bg-sky-600 text-white font-semibold py-2 px-4 rounded-md transition disabled:opacity-50"
-      >
-        {{ isLogin ? 'Se connecter' : 'S\'inscrire' }}
-      </button>
-    </form>
+      
+      <div class="bg-white rounded-2xl shadow-sm p-8 border border-gray-200">
+        
+        <!-- État: Vérification Email -->
+        <div *ngIf="showEmailVerification" class="text-center">
+          <div class="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
+            <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#10B981" stroke-width="2">
+              <path d="M22 13.08V8a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2v12c0 1.1.9 2 2 2h8"></path>
+              <circle cx="18" cy="15" r="3"></circle>
+              <polyline points="22,4 12,14.01 9,11.01"></polyline>
+            </svg>
+          </div>
+          
+          <h2 class="text-2xl font-bold text-gray-900 mb-4">Vérifiez votre email</h2>
+          
+          <div class="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-6">
+            <p class="text-sm text-blue-800 text-center">
+              Nous avons envoyé un lien de vérification à<br>
+              <strong class="text-blue-900">{{ formData.email }}</strong>
+            </p>
+          </div>
 
-   
-    <div class="mt-6 text-center">
-      <p class="text-sm text-gray-600">
-        {{ isLogin ? 'Pas encore inscrit ?' : 'Déjà un compte ?' }}
-        <button
-          (click)="toggleForm()"
-          class="ml-1 text-sky-600 hover:text-sky-800 font-medium"
-        >
-          {{ isLogin ? 'S\'inscrire' : 'Se connecter' }}
-        </button>
-      </p>
+          <div class="space-y-4 text-sm text-gray-600">
+            <p>📧 <strong>Consultez votre boîte de réception</strong></p>
+            <p>🔗 <strong>Cliquez sur le lien de vérification</strong></p>
+            <p>✅ <strong>Activez votre compte</strong></p>
+          </div>
+
+          <div class="mt-6 space-y-3">
+            <button
+              (click)="resendVerificationEmail()"
+              class="w-full bg-green-500 hover:bg-green-600 text-white font-medium py-3 px-4 rounded-lg transition-colors"
+            >
+              Renvoyer l'email
+            </button>
+            
+            <button
+              (click)="showEmailVerification = false; isLogin = true"
+              class="w-full text-gray-600 hover:text-gray-800 font-medium py-3 px-4 rounded-lg transition-colors border border-gray-300 hover:border-gray-400"
+            >
+              Se connecter
+            </button>
+          </div>
+
+          <div class="mt-6 p-3 bg-gray-50 rounded-lg">
+            <p class="text-xs text-gray-500">
+              💡 <strong>Astuce :</strong> Vérifiez aussi vos spams si vous ne trouvez pas l'email.
+            </p>
+          </div>
+        </div>
+
+        <!-- État: Formulaire normal (connexion/inscription) -->
+        <div *ngIf="!showEmailVerification">
+          
+          <!-- En-tête -->
+          <div class="text-center mb-8">
+            <h2 class="text-2xl font-bold text-gray-900">
+              {{ showResetPassword ? 'Réinitialisation' : isLogin ? 'Connexion' : 'Inscription' }}
+            </h2>
+            <p class="text-gray-600 mt-2 text-sm">
+              <span *ngIf="showResetPassword">Entrez votre email pour réinitialiser votre mot de passe</span>
+              <span *ngIf="!showResetPassword && isLogin">Content de vous revoir !</span>
+              <span *ngIf="!showResetPassword && !isLogin">Rejoignez-nous en 30 secondes</span>
+            </p>
+          </div>
+
+          <!-- Formulaire Reset Password -->
+          <form *ngIf="showResetPassword" (ngSubmit)="onResetPassword()" #resetForm="ngForm" class="space-y-4">
+            <div class="space-y-2">
+              <label class="block text-sm font-medium text-gray-700">Email *</label>
+              <input
+                type="email"
+                name="resetEmail"
+                [(ngModel)]="resetData.email"
+                required
+                email
+                #resetEmail="ngModel"
+                placeholder="votre@email.com"
+                class="w-full px-4 py-3 bg-gray-50 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500 outline-none transition-colors placeholder-gray-400"
+              />
+              <div *ngIf="resetEmail.invalid && resetEmail.touched" class="text-red-500 text-xs">
+                Email valide requis
+              </div>
+            </div>
+
+            <button
+              type="submit"
+              [disabled]="resetForm.invalid"
+              class="w-full bg-green-500 hover:bg-green-600 text-white font-medium py-3 px-4 rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+            >
+              Envoyer le lien de réinitialisation
+            </button>
+
+            <button
+              type="button"
+              (click)="showResetPassword = false"
+              class="w-full text-gray-600 hover:text-gray-800 font-medium py-3 px-4 rounded-lg transition-colors border border-gray-300 hover:border-gray-400"
+            >
+              Retour à la connexion
+            </button>
+          </form>
+
+          <!-- Formulaire Login/Register -->
+          <form *ngIf="!showResetPassword" (ngSubmit)="onSubmit()" #authForm="ngForm" class="space-y-4">
+            
+            <!-- Section Nom + Username en parallèle -->
+            <div *ngIf="!isLogin" class="grid grid-cols-2 gap-3">
+              <div class="space-y-2">
+                <label class="block text-sm font-medium text-gray-700">Prénom *</label>
+                <input
+                  type="text"
+                  name="firstName"
+                  [(ngModel)]="formData.firstName"
+                  required
+                  #firstName="ngModel"
+                  placeholder="Jean"
+                  class="w-full px-3 py-2 bg-gray-50 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500 outline-none transition-colors placeholder-gray-400 text-sm"
+                />
+                <div *ngIf="firstName.invalid && firstName.touched" class="text-red-500 text-xs">
+                  Requis
+                </div>
+              </div>
+              
+              <div class="space-y-2">
+                <label class="block text-sm font-medium text-gray-700">Nom *</label>
+                <input
+                  type="text"
+                  name="lastName"
+                  [(ngModel)]="formData.lastName"
+                  required
+                  #lastName="ngModel"
+                  placeholder="Dupont"
+                  class="w-full px-3 py-2 bg-gray-50 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500 outline-none transition-colors placeholder-gray-400 text-sm"
+                />
+                <div *ngIf="lastName.invalid && lastName.touched" class="text-red-500 text-xs">
+                  Requis
+                </div>
+              </div>
+            </div>
+
+            <!-- Username (register only) -->
+            <div *ngIf="!isLogin" class="space-y-2">
+              <label class="block text-sm font-medium text-gray-700">Nom d'utilisateur *</label>
+              <input
+                type="text"
+                name="username"
+                [(ngModel)]="formData.username"
+                required
+                minlength="3"
+                maxlength="30"
+                pattern="^[a-zA-Z0-9_]+$"
+                #username="ngModel"
+                placeholder="jean.dupont"
+                class="w-full px-3 py-2 bg-gray-50 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500 outline-none transition-colors placeholder-gray-400 text-sm"
+              />
+              <div *ngIf="username.invalid && username.touched" class="text-red-500 text-xs">
+                3-30 caractères (lettres, chiffres, _)
+              </div>
+            </div>
+
+            <!-- Email -->
+            <div class="space-y-2">
+              <label class="block text-sm font-medium text-gray-700">Email *</label>
+              <input
+                type="email"
+                name="email"
+                [(ngModel)]="formData.email"
+                required
+                email
+                #email="ngModel"
+                placeholder="votre@email.com"
+                class="w-full px-4 py-3 bg-gray-50 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500 outline-none transition-colors placeholder-gray-400"
+              />
+              <div *ngIf="email.invalid && email.touched" class="text-red-500 text-xs">
+                Email valide requis
+              </div>
+            </div>
+
+            <!-- Phone + Password en parallèle (register only) -->
+            <div *ngIf="!isLogin" class="grid grid-cols-2 gap-3">
+              <div class="space-y-2">
+                <label class="block text-sm font-medium text-gray-700">Téléphone *</label>
+                <input
+                  type="tel"
+                  name="phone"
+                  [(ngModel)]="formData.phone"
+                  pattern="^0[0-9]{9}$"
+                  required
+                  #phone="ngModel"
+                  placeholder="0612345678"
+                  class="w-full px-3 py-2 bg-gray-50 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500 outline-none transition-colors placeholder-gray-400 text-sm"
+                />
+                <div *ngIf="phone.invalid && phone.touched" class="text-red-500 text-xs">
+                  10 chiffres
+                </div>
+              </div>
+              
+              <div class="space-y-2">
+                <label class="block text-sm font-medium text-gray-700">Mot de passe *</label>
+                <input
+                  type="password"
+                  name="password"
+                  [(ngModel)]="formData.password"
+                  required
+                  minlength="8"
+                  #password="ngModel"
+                  placeholder="••••••••"
+                  class="w-full px-3 py-2 bg-gray-50 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500 outline-none transition-colors placeholder-gray-400 text-sm"
+                />
+                <div *ngIf="password.invalid && password.touched" class="text-red-500 text-xs">
+                  8+ caractères
+                </div>
+              </div>
+            </div>
+
+            <!-- Password seulement pour login -->
+            <div *ngIf="isLogin" class="space-y-2">
+              <label class="block text-sm font-medium text-gray-700">Mot de passe *</label>
+              <input
+                type="password"
+                name="password"
+                [(ngModel)]="formData.password"
+                required
+                #password="ngModel"
+                placeholder="••••••••"
+                class="w-full px-4 py-3 bg-gray-50 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500 outline-none transition-colors placeholder-gray-400"
+              />
+              <div *ngIf="password.invalid && password.touched" class="text-red-500 text-xs">
+                Mot de passe requis
+              </div>
+            </div>
+
+            <!-- Confirmation password (register only) -->
+            <div *ngIf="!isLogin" class="space-y-2">
+              <label class="block text-sm font-medium text-gray-700">Confirmer le mot de passe *</label>
+              <input
+                type="password"
+                name="confirmPassword"
+                [(ngModel)]="formData.confirmPassword"
+                required
+                #confirmPassword="ngModel"
+                placeholder="••••••••"
+                class="w-full px-3 py-2 bg-gray-50 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500 outline-none transition-colors placeholder-gray-400 text-sm"
+              />
+              <div *ngIf="formData.password !== formData.confirmPassword && confirmPassword.touched" class="text-red-500 text-xs">
+                Les mots de passe ne correspondent pas
+              </div>
+            </div>
+
+            <!-- Mot de passe oublié (login only) -->
+            <div *ngIf="isLogin" class="text-right">
+              <button
+                type="button"
+                (click)="showResetPassword = true"
+                class="text-sm text-green-600 hover:text-green-800 font-medium"
+              >
+                Mot de passe oublié ?
+              </button>
+            </div>
+
+            <!-- Bouton de soumission -->
+            <button
+              type="submit"
+              [disabled]="authForm.invalid"
+              class="w-full bg-green-500 hover:bg-green-600 text-white font-medium py-3 px-4 rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed mt-4"
+            >
+              {{ isLogin ? 'Se connecter' : 'Créer mon compte' }}
+            </button>
+          </form>
+
+          <!-- Lien de basculement -->
+          <div *ngIf="!showResetPassword" class="mt-6 text-center">
+            <p class="text-sm text-gray-600">
+              {{ isLogin ? 'Pas encore de compte ?' : 'Déjà un compte ?' }}
+              <button
+                (click)="toggleForm()"
+                class="ml-1 text-green-600 hover:text-green-800 font-medium"
+              >
+                {{ isLogin ? 'S\'inscrire' : 'Se connecter' }}
+              </button>
+            </p>
+          </div>
+
+          <!-- Footer légal -->
+          <div class="mt-6 pt-4 border-t border-gray-200">
+            <p class="text-xs text-gray-500 text-center">
+              En continuant, vous acceptez nos 
+              <a href="#" class="text-green-600 hover:text-green-800">Conditions</a> 
+              et notre 
+              <a href="#" class="text-green-600 hover:text-green-800">Confidentialité</a>
+            </p>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </div>

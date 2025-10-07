@@ -5,6 +5,7 @@ import {
   ViewChild,
   ElementRef,
   ChangeDetectorRef,
+  Output,
 } from '@angular/core';
 import { ApiService } from '../../service/api.service';
 import { SocketService } from '../../service/socket.service';
@@ -16,28 +17,124 @@ import { SocketService } from '../../service/socket.service';
 })
 export class ChatComponent implements OnInit, OnDestroy {
   @ViewChild('scrollMe', { static: false }) private scrollContainer!: ElementRef;
-
-  isActived: boolean = false;
-  isAdduser: boolean = false;
+  
+  isActived : boolean=false;
+  isAdduser : boolean = false;
   amis: any[] = [];
   selectedConversation: any = null;
+  userData: any = {};
+  showEditModal = false;
+  editingField = '';
+  editValue = '';
   userId!: string;
   inputMessage: string = '';
   countInseenMsg: any = {};
   Lastmessages: any = {};
-userOline:any[]=[];
+  userOline:any[]=[];
+  openProfil : boolean =false;
   data: any = {
     input: '',
     currentUserId: '',
   };
-
+  handleProfil(){
+    this.openProfil=!this.openProfil;
+  }
 
   constructor(
     private api: ApiService,
     private socketService: SocketService,
     private cdr: ChangeDetectorRef
   ) {}
+userProfilParent: any;
 
+receiveUser(data: any) {
+  this.userProfilParent = data;
+  console.log('Profil reçu du composant enfant :', data);
+}
+
+  editField(field: string) {
+    this.editingField = field;
+    this.editValue = this.getFieldValue(field);
+    this.showEditModal = true;
+  }
+
+  getFieldValue(field: string): string {
+    switch (field) {
+      case 'username': return this.userData.username;
+      case 'email': return this.userData.email;
+      case 'phone': return this.userData.phone || '';
+      case 'bio': return this.userData.bio || '';
+      case 'status': return this.userData.status || '';
+      default: return '';
+    }
+  }
+
+  getFieldLabel(field: string): string {
+    const labels: any = {
+      'username': 'nom d\'utilisateur',
+      'email': 'email',
+      'phone': 'téléphone',
+      'bio': 'bio',
+      'status': 'statut'
+    };
+    return labels[field] || field;
+  }
+
+  saveEdit() {
+    const updateData = { [this.editingField]: this.editValue };
+    
+   
+    
+  }
+
+  cancelEdit() {
+    this.showEditModal = false;
+    this.editingField = '';
+    this.editValue = '';
+  }
+
+  getLastSeen(lastSeen: string): string {
+    if (!lastSeen) return 'Inconnu';
+    const date = new Date(lastSeen);
+    return date.toLocaleDateString('fr-FR') + ' à ' + date.toLocaleTimeString('fr-FR');
+  }
+
+  getLanguageName(lang: string): string {
+    const languages: any = {
+      'fr': 'Français',
+      'en': 'English',
+      'es': 'Español'
+    };
+    return languages[lang] || lang;
+  }
+
+  changeAvatar() {
+    // Logique pour changer l'avatar
+    console.log('Changer avatar');
+  }
+
+  changePassword() {
+    // Logique pour changer le mot de passe
+    console.log('Changer mot de passe');
+  }
+
+  exportData() {
+    // Logique pour exporter les données
+    console.log('Exporter données');
+  }
+
+  deleteAccount() {
+    if (confirm('Êtes-vous sûr de vouloir supprimer votre compte ? Cette action est irréversible.')) {
+     
+    
+    }
+  }
+
+  
+
+  goBack() {
+    
+  }
   ngOnInit(): void {
     this.userId = localStorage.getItem('id') || '';
     this.data.currentUserId = this.userId;
@@ -99,6 +196,7 @@ userOline:any[]=[];
           ...user,
           conversation: res.messages,
         };
+        console.log("this is the conversation of : ",this.selectedConversation);
         this.cdr.detectChanges();
         setTimeout(() => this.scrollToBottom(), 100);
       },
@@ -172,20 +270,31 @@ userOline:any[]=[];
     });
   }
 
-  getHeureMinutes(date: any): string {
-    const dateObj =
-      typeof date === 'string' || date instanceof String
-        ? new Date(date.toString())
-        : date;
-
-    const heures = dateObj.getHours();
-    const minutes = dateObj.getMinutes();
-
-    const heuresStr = heures < 10 ? '0' + heures : heures.toString();
-    const minutesStr = minutes < 10 ? '0' + minutes : minutes.toString();
-
-    return `${heuresStr}:${minutesStr}`;
+ getHeureMinutes(date: any): string {
+  // ✅ Si la date n'existe pas, on retourne une chaîne vide
+  if (!date) {
+    return '';
   }
+
+  const dateObj =
+    typeof date === 'string' || date instanceof String
+      ? new Date(date.toString())
+      : date;
+
+  // ✅ Si ce n’est pas une vraie date (par exemple texte ou objet invalide)
+  if (!(dateObj instanceof Date) || isNaN(dateObj.getTime())) {
+    return '';
+  }
+
+  const heures = dateObj.getHours();
+  const minutes = dateObj.getMinutes();
+
+  const heuresStr = heures < 10 ? '0' + heures : heures.toString();
+  const minutesStr = minutes < 10 ? '0' + minutes : minutes.toString();
+
+  return `${heuresStr}:${minutesStr}`;
+}
+
 
   private scrollToBottom(): void {
     try {
@@ -194,5 +303,14 @@ userOline:any[]=[];
     } catch (err) {
       console.error('Erreur scrollToBottom:', err);
     }
+  }
+
+
+  openMenuIndex: number | null = null;
+
+  // Fonction pour ouvrir/fermer le menu
+  toggleConversationMenu(index: number, event: Event) {
+    event.stopPropagation();
+    this.openMenuIndex = this.openMenuIndex === index ? null : index;
   }
 }

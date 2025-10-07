@@ -7,6 +7,8 @@ import cors from 'cors';
 import authRoutes from './routes/index.js';
 import http from 'http'
 import dotenv from 'dotenv';
+import jwt from 'jsonwebtoken';
+
 dotenv.config();
 
 const server = http.createServer(app);
@@ -34,15 +36,21 @@ app.use('/auth',authRoutes);
 
 // initialiser socket server 
 
-export const io= new Server(server,{
-  cors:{origin :'*'}
+export const io = new Server(server,{
+  cors:{origin :'http://localhost:4200',
+    credentials: true}
 });
 
 // Store online users 
 
 export const onlineUser = {} ;
 io.on("connection",(socket)=>{
-  const userId = socket.handshake.query.userId ;
+  /* const userId = socket.handshake.query.userId ; */
+  const token = socket.handshake.headers.cookie?.split('auth_token=')[1];
+  if (!token) return socket.disconnect();
+  try{
+  const payload=jwt.verify(token,process.env.JWT_SECRET);
+  const userId=payload.id;
   console.log(" user connected ",userId);
   if(userId) onlineUser[userId] = socket.id;
   console.log( 'Users Online : ',onlineUser );
@@ -55,6 +63,11 @@ io.on("connection",(socket)=>{
     delete onlineUser[userId];
     io.emit("getOnlineUsers",Object.keys(onlineUser))
   })
+  } catch (err) {
+    console.log('JWT invalide', err);
+    socket.disconnect();
+  }
+  
 })
 
 

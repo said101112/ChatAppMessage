@@ -13,27 +13,74 @@ export class LoginComponent {
 
   constructor(private api :ApiService , private router: Router){};
       isLogin = true;
+      registrationData={};
       formData = {
+    firstName: '',
+    lastName: '', 
+    username: '',
+    phone: '',
+    confirmPassword: '',
+    email: '',
+    password: ''
+  };
+   showResetPassword = false;
+   showEmailVerification = false;
+    resendVerificationEmail() {
+    
+  }
+ onResetPassword() {
+    console.log('Reset password for:', this.resetData.email);
+    // Ici vous enverriez la requête de reset
+    alert(`Un lien de réinitialisation a été envoyé à ${this.resetData.email}`);
+    this.showResetPassword = false;
+  }
+ resetData = {
+    email: ''
+  };
+  
+resetForm() {
+    this.formData = {
+      firstName: '',
+      lastName: '',
       username: '',
+      email: '',
       phone: '',
-        email: '',
-        password: ''
-      };
-
+      password: '',
+      confirmPassword: ''
+    };
+  }
+  data={};
       onSubmit() {
         if (this.isLogin) {
           console.log('Connexion avec:', this.formData.email, this.formData.password);
            this.api.connexion(this.formData).subscribe(res=>{
             console.log('connexion reussite 100%', res);
+            
             localStorage.setItem('id',res.id);
             this.router.navigate(['/chat']);
            })
 
         } else {
+          this.registrationData = {
+      username: this.formData.username,
+      firstName: this.formData.firstName,
+      lastName: this.formData.lastName,
+      email: this.formData.email,
+      phone: this.formData.phone,
+      password: this.formData.password
+     
+    };
           console.log('Inscription:', this.formData);
-          this.api.addUser(this.formData).subscribe(res=>{
+          if(this.formData.password=== this.formData.confirmPassword){
+
+          
+          this.api.addUser(this.registrationData).subscribe(res=>{
             console.log('responde de api cest :',res)
+            this.showEmailVerification = true;
           });
+        }else{
+          console.log('password et confirmer password nest pas identique .  ')
+        }
         }
       
       }

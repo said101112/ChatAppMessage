@@ -25,13 +25,15 @@ export class ApiService {
 
   // ✅ Récupérer les amis
   getAmis(): Observable<any> {
-    return this.Http.get(`http://localhost:3000/auth/getAmis/${this.id}`);
+    return this.Http.get(`http://localhost:3000/auth/getAmis/${this.id}`,{ withCredentials: true });
   }
-
+   updateLastLogin(UserId: string): Observable<any> {
+    return this.Http.post('http://localhost:3000/auth/updateLastLogin', { userId : UserId },{ withCredentials: true });
+  }
   // ✅ Ajouter un ami
   addamis(userdata: any): Observable<any> {
     console.log('➕ Ajout ami :', userdata);
-    return this.Http.post('http://localhost:3000/auth/addAmis', userdata);
+    return this.Http.post('http://localhost:3000/auth/addAmis', userdata,{ withCredentials: true });
   }
 
   // ✅ Envoyer un message
@@ -50,11 +52,11 @@ export class ApiService {
 
   // ✅ Déconnexion
   logout(): Observable<any> {
-    return this.Http.get('http://localhost:3000/auth/logout', { withCredentials: true });
+    return this.Http.post('http://localhost:3000/auth/logout', { withCredentials: true });
   }
 
   // ✅ Récupérer profil (optionnel)
   getProfil(): Observable<any> {
-    return this.Http.get(`http://localhost:3000/auth/profil/${this.id}`);
+    return this.Http.get(`http://localhost:3000/auth/user/${this.id}`,{ withCredentials: true });
   }
 }
