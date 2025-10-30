@@ -1,6 +1,7 @@
 import { Component, Input, Output, EventEmitter, OnInit } from '@angular/core';
 import { ApiService } from '../../../service/api.service';
 import { Router } from '@angular/router';
+import localforage from 'localforage';
 
 @Component({
   selector: 'app-sidebar',
@@ -34,6 +35,8 @@ export class SidebarComponent implements OnInit {
               next: (res) => console.log(res.message),
               error: (err) => console.error('Erreur mise à jour lastLogin', err)
             })
+            localforage.removeItem('pubKey');
+            localforage.removeItem('prevKey');
     this.router.navigate(['']);
     }) }
   @Input() onToggle!:()=>void;

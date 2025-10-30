@@ -59,4 +59,7 @@ export class ApiService {
   getProfil(): Observable<any> {
     return this.Http.get(`http://localhost:3000/auth/user/${this.id}`,{ withCredentials: true });
   }
+  publickey(publicKey:string) : Observable<any>{
+    return this.Http.post('http://localhost:3000/auth/me/pubkey',{publicKey},{withCredentials:true});
+  }
 }

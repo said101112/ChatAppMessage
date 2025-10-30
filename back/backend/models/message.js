@@ -17,6 +17,8 @@ const messageSchema = new mongoose.Schema(
       trim: true,
       required: true,
     },
+    nonce: { type: String, required: true }, // utilisé pour le déchiffrement
+    senderEphemeralPublicKey: { type: String, required: true },
     status: {
       type: String,
       enum: ['sent', 'delivered', 'seen'],

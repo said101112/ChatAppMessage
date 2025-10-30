@@ -27,7 +27,17 @@ router.get('/verify/:token', async (req, res) => {
   User.verifyToken = undefined;
   await User.save();
 
-  res.send('Email vérifié avec succès ! Vous pouvez maintenant vous connecter.');
+ res.send(`
+      <html>
+        <head>
+          <meta http-equiv="refresh" content="1;url=http://localhost:4200/login" />
+        </head>
+        <body style="font-family: sans-serif; text-align:center; margin-top: 100px;">
+          <h2>Email vérifié avec succès ✅</h2>
+          <p>Redirection vers la page de connexion...</p>
+        </body>
+      </html>
+    `);
 });
 router.post('/updateLastLogin', async (req, res) => {
   const { userId } = req.body;
@@ -41,6 +51,17 @@ router.post('/updateLastLogin', async (req, res) => {
   } catch (err) {
     res.status(500).json({ message: 'Erreur serveur', error: err });
   }
+});
+router.post('/me/pubkey', protect, async (req, res) => {
+  const { publicKey } = req.body; 
+  if (!publicKey) return res.status(400).send({ msg: 'publicKey required' });
+  await user.findByIdAndUpdate(req.user._id, { publicKey });
+  res.send({ json:'okkkkkkkkkkkkkkkkkkk', ok: true });
+});
+router.get('/user/:id/pubkey',protect, async (req, res) => {
+  const u = await user.findById(req.params.id).select('publicKey');
+  if (!u) return res.status(404).send({ msg: 'no user' });
+  res.send({ publicKey: u.publicKey });
 });
 
 export default router;
