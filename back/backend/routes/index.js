@@ -35,6 +35,7 @@ router.get('/verify/:token', async (req, res) => {
         <body style="font-family: sans-serif; text-align:center; margin-top: 100px;">
           <h2>Email vérifié avec succès ✅</h2>
           <p>Redirection vers la page de connexion...</p>
+          <p> Attentdez un petit peu pour redireger vers la page login ...</p>
         </body>
       </html>
     `);
