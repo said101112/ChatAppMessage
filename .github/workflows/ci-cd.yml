@@ -1,6 +1,5 @@
 name: CI/CD
 
-# quand on déclenche le pipeline
 on:
   push:
     branches: [main]
@@ -20,6 +19,8 @@ jobs:
       with:
         node-version: '20'
         cache: 'npm'
+        # ⬇️ AJOUTE cette ligne si package.json est dans un sous-dossier ⬇️
+        cache-dependency-path: '**/package-lock.json'
 
     - name: Install dependencies
       run: npm install
