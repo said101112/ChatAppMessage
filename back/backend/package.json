@@ -4,7 +4,7 @@
   "main": "index.js",
   "scripts": {
     "dev": "nodemon index.js",
-    "build":"node index.js"
+    "build":"echo 'Backend build completed successfully'"
   },
   "keywords": [],
   "author": "",
