@@ -34,8 +34,8 @@ const userSchema = new mongoose.Schema({
   password: { type: String, required: true, trim: true, minlength: 8 },
   avatar: { type: String, default: '' }, 
   bio: { type: String, maxlength: 160, default: '' }, 
-  status: { type: String, maxlength: 50, default: 'Disponible' }, 
-  lastSeen: { type: Date }, 
+  status: { type: String, maxlength: 50, default: 'Disponible' }, // statut court
+  lastSeen: { type: Date }, // dernière connexion
   role: { type: String, enum: ['user','admin'], default: 'user' },
   timezone: { type: String, default: 'UTC' },
   language: { type: String, default: 'fr' },
@@ -47,8 +47,8 @@ const userSchema = new mongoose.Schema({
 },
 verifyToken: {
   type: String
-},
-publicKey: { type: String, default: null }
+}
+
 });
 
 // Index pour recherches rapides

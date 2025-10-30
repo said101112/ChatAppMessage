@@ -9,7 +9,6 @@ import {
 } from '@angular/core';
 import { ApiService } from '../../service/api.service';
 import { SocketService } from '../../service/socket.service';
-import { CryptoService } from '../../service/crypto.service';
 
 @Component({
   selector: 'app-chat',
@@ -44,8 +43,7 @@ export class ChatComponent implements OnInit, OnDestroy {
   constructor(
     private api: ApiService,
     private socketService: SocketService,
-    private cdr: ChangeDetectorRef,
-    private crypto:CryptoService
+    private cdr: ChangeDetectorRef
   ) {}
 userProfilParent: any;
 
@@ -240,7 +238,7 @@ receiveUser(data: any) {
       text,
     };
 
-    
+    // Envoi via API
     this.api.sendMessage(this.selectedConversation._id, { text }).subscribe({
       next: (res) => {
         this.selectedConversation.conversation.push(res.message);

@@ -52,17 +52,6 @@ router.post('/updateLastLogin', async (req, res) => {
     res.status(500).json({ message: 'Erreur serveur', error: err });
   }
 });
-router.post('/me/pubkey', protect, async (req, res) => {
-  const { publicKey } = req.body; 
-  if (!publicKey) return res.status(400).send({ msg: 'publicKey required' });
-  await user.findByIdAndUpdate(req.user._id, { publicKey });
-  res.send({ json:'okkkkkkkkkkkkkkkkkkk', ok: true });
-});
-router.get('/user/:id/pubkey',protect, async (req, res) => {
-  const u = await user.findById(req.params.id).select('publicKey');
-  if (!u) return res.status(404).send({ msg: 'no user' });
-  res.send({ publicKey: u.publicKey });
-});
 
 export default router;
 
