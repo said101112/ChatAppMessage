@@ -47,6 +47,7 @@ export const onlineUser = {} ;
 io.on("connection",(socket)=>{
   /* const userId = socket.handshake.query.userId ; */
   const token = socket.handshake.headers.cookie?.split('auth_token=')[1];
+
   if (!token) return socket.disconnect();
   try{
   const payload=jwt.verify(token,process.env.JWT_SECRET);
@@ -57,7 +58,12 @@ io.on("connection",(socket)=>{
 
   io.emit("getOnlineUsers",Object.keys(onlineUser));
   socket.on('sendMessage',(msg)=>{
-     console.log('new msg sender',msg);
+     
+     console.log('new msg sender',msg.message);
+  })
+    socket.on('joinRoom',(r)=>{
+    socket.join(r);
+     console.log(`${socket.id} a rejoint ${r}`);
   })
   socket.on("disconnect",()=>{
     delete onlineUser[userId];

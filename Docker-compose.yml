@@ -3,8 +3,17 @@ services:
     build: ./chatv2
     ports:
       - "4200:4200"
+    develop:
+      watch: 
+      - action: sync
+        path: ./chatv2
+        target: /app
+        ignore: node_modules/
+      - action: rebuild
+        path: ./chatv2/package.json
     depends_on:
       - backend
+    
 
   backend:
     build: ./back/backend

@@ -27,6 +27,7 @@ export class ChatComponent implements OnInit, OnDestroy,AfterViewChecked {
   showEditModal = false;
   editingField = '';
   editValue = '';
+  Room:any="";
   userId!: string;
   inputMessage: string = '';
   countInseenMsg: any = {};
@@ -37,6 +38,7 @@ export class ChatComponent implements OnInit, OnDestroy,AfterViewChecked {
     input: '',
     currentUserId: '',
   };
+  private shouldAutoScroll = true;
   handleProfil(){
     this.openProfil=!this.openProfil;
   }
@@ -47,8 +49,12 @@ export class ChatComponent implements OnInit, OnDestroy,AfterViewChecked {
     private cdr: ChangeDetectorRef
   ) {}
   ngAfterViewChecked(): void {
+  if (this.shouldAutoScroll) {
     this.scrollToBottom();
   }
+}
+
+
   private scrollToBottom(): void {
   if (this.scrolldiv) {
     setTimeout(() => {
@@ -57,6 +63,15 @@ export class ChatComponent implements OnInit, OnDestroy,AfterViewChecked {
     }, 0);
   }
 }
+
+onScroll(): void {
+  const div = this.scrolldiv.nativeElement;
+  const distanceFromBottom = div.scrollHeight - div.scrollTop - div.clientHeight;
+
+  // Si l’utilisateur est proche du bas (< 100px), on active le scroll auto
+  this.shouldAutoScroll = distanceFromBottom < 100;
+}
+
 
 userProfilParent: any;
 
@@ -151,13 +166,18 @@ receiveUser(data: any) {
   ngOnInit(): void {
     this.userId = localStorage.getItem('id') || '';
     this.data.currentUserId = this.userId;
+    
+   
+    this.socketService.joinRoom(this.Room);
     this.api.id = this.userId;
     console.log(this.userOline);
        
     // Connexion Socket
     this.socketService.connect(this.userId);
     console.log('Socket connecté avec ID:', this.userId);
-
+     setTimeout(()=>{
+       this.Room = this.generateRoomId();
+    },500)
     // Chargement des amis
     this.loadAmis();
 
@@ -193,7 +213,11 @@ receiveUser(data: any) {
 
   
   }
-
+  generateRoomId() {
+  const timestamp = Date.now(); // ex: 1730417559000
+  const random = Math.floor(Math.random() * 10000); // ex: 4821
+  return `room_${timestamp}_${random}`;
+}
   ngOnDestroy(): void {
     this.socketService.disconnect();
   }
@@ -228,7 +252,7 @@ receiveUser(data: any) {
         this.data.input = '';
         this.isAdduser = false;
 
-        this.socketService.sendMessage({
+        this.socketService.sendMessage(this.Room,{
           senderId: this.userId,
           text: 'Nouvel ami ajouté',
         });
@@ -264,7 +288,7 @@ receiveUser(data: any) {
     });
 
     // Envoi via socket
-    this.socketService.sendMessage(message);
+    this.socketService.sendMessage(this.Room,message);
 
     // Vider le champ
     this.inputMessage = '';

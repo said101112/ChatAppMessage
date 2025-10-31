@@ -12,7 +12,8 @@ export class SocketService {
   // Connexion avec l'ID utilisateur
   connect(userId: string) {
     console.log('🔌 Tentative de connexion au socket avec userId:', userId);
-
+  if (!this.socket) {
+      
     this.socket = io('http://localhost:3000', {
        withCredentials: true
     });
@@ -28,6 +29,7 @@ export class SocketService {
     this.socket.on('disconnect', (reason) => {
       console.warn('⚠️ Déconnecté du socket. Raison:', reason);
     });
+  }
   }
 
   // Écouter les nouveaux messages
@@ -47,12 +49,19 @@ export class SocketService {
       callback(userIds);
     });
   }
-
-  // Envoyer un message
-  sendMessage(message: any) {
-    console.log('📤 Envoi du message:', message);
-    this.socket.emit('sendMessage', message);
+  joinRoom(room:any){
+    if (!this.socket) {
+      console.error('❌ Socket not initialized');
+      return;
+    }
+    this.socket.emit('joinRoom',room);
   }
+  // Envoyer un message
+  sendMessage(Room : any, message: any) {
+    console.log('📤 Envoi du message:', message);
+    this.socket.emit('sendMessage', {Room,message});
+  }
+
 
   // Déconnexion
   disconnect() {

@@ -587,7 +587,7 @@
       </div>
 
       <!-- Zone des messages propre -->
-      <div #scrolldiv class="flex-1 overflow-y-auto px-6 py-4 space-y-3 bg-gray-50">
+      <div #scrolldiv class="flex-1 overflow-y-auto px-6 py-4 space-y-3 bg-gray-50" (scroll)="onScroll()">
         <div class="flex justify-center">
           <div class="bg-white/80 backdrop-blur-sm px-4 py-2 rounded-full text-xs text-gray-600 font-medium border border-gray-200/50 shadow-sm">
             Aujourd'hui
