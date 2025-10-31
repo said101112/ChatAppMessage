@@ -6,6 +6,7 @@ import {
   ElementRef,
   ChangeDetectorRef,
   Output,
+  AfterViewChecked,
 } from '@angular/core';
 import { ApiService } from '../../service/api.service';
 import { SocketService } from '../../service/socket.service';
@@ -15,8 +16,8 @@ import { SocketService } from '../../service/socket.service';
   templateUrl: './chat.component.html',
   styleUrls: ['./chat.component.css'],
 })
-export class ChatComponent implements OnInit, OnDestroy {
-  @ViewChild('scrollMe', { static: false }) private scrollContainer!: ElementRef;
+export class ChatComponent implements OnInit, OnDestroy,AfterViewChecked {
+  @ViewChild('scrolldiv') scrolldiv!:ElementRef<HTMLDivElement>;
   
   isActived : boolean=false;
   isAdduser : boolean = false;
@@ -45,6 +46,18 @@ export class ChatComponent implements OnInit, OnDestroy {
     private socketService: SocketService,
     private cdr: ChangeDetectorRef
   ) {}
+  ngAfterViewChecked(): void {
+    this.scrollToBottom();
+  }
+  private scrollToBottom(): void {
+  if (this.scrolldiv) {
+    setTimeout(() => {
+      const div = this.scrolldiv.nativeElement;
+      div.scrollTop = div.scrollHeight;
+    }, 0);
+  }
+}
+
 userProfilParent: any;
 
 receiveUser(data: any) {
@@ -296,14 +309,7 @@ receiveUser(data: any) {
 }
 
 
-  private scrollToBottom(): void {
-    try {
-      this.scrollContainer.nativeElement.scrollTop =
-        this.scrollContainer.nativeElement.scrollHeight;
-    } catch (err) {
-      console.error('Erreur scrollToBottom:', err);
-    }
-  }
+
 
 
   openMenuIndex: number | null = null;
