@@ -4,7 +4,7 @@
   "main": "index.js",
   "scripts": {
     "dev": "nodemon index.js",
-    "build":"echo 'Backend build completed successfully'"
+    "build": "echo 'Backend build completed successfully'"
   },
   "keywords": [],
   "author": "",
@@ -22,6 +22,7 @@
     "jsonwebtoken": "^9.0.2",
     "mongoose": "^8.15.1",
     "multer": "^2.0.1",
+    "nanoid": "^5.1.6",
     "nodemailer": "^7.0.6",
     "nodemon": "^3.1.10",
     "sanitize-html": "^2.17.0",

@@ -8,6 +8,7 @@ import crypto from 'crypto';
 import { sendVerificationEmail } from '../controller/utils/email.js';
 import validator from 'validator';
 import sanitizeHtml from 'sanitize-html';
+import generatedUniqueConnectCode from './utils/generatedUniqueConnect.js';
 
 dotenv.config();
 
@@ -54,11 +55,12 @@ export const SignUp = async (req, res) => {
     const hashedpwd = await bcrypt.hash(password, 10);
     const token = crypto.randomBytes(32).toString('hex');
 
-    // ✅ Création utilisateur
+   
     const newuser = new user({
+      ConnectCode:await generatedUniqueConnectCode(),
       username, firstName, lastName, password: hashedpwd, email, phone,
       bio, avatar: '', status: 'Disponible', lastSeen: new Date(), role: 'user',
-      timezone: 'Europe/Paris', language: 'fr', amis: [], createdAt: new Date(),
+      timezone: 'Europe/Paris', language: 'fr',
       verifyToken: token
     });
 
@@ -66,6 +68,7 @@ export const SignUp = async (req, res) => {
     sendVerificationEmail(newuser);
 
     res.status(201).json({
+      success:true,
       message: 'Compte créé avec succès',
       user: { id: newuser._id, username, firstName, lastName, email, phone }
     });

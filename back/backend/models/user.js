@@ -1,9 +1,11 @@
 import mongoose from 'mongoose';
 
-
-
-
 const userSchema = new mongoose.Schema({
+  ConnectCode: {
+    type: String,
+    required: true,
+    index: true
+  },
   username: {
     type: String,
     required: true,
@@ -34,28 +36,22 @@ const userSchema = new mongoose.Schema({
   password: { type: String, required: true, trim: true, minlength: 8 },
   avatar: { type: String, default: '' }, 
   bio: { type: String, maxlength: 160, default: '' }, 
-  status: { type: String, maxlength: 50, default: 'Disponible' }, // statut court
-  lastSeen: { type: Date }, // dernière connexion
-  role: { type: String, enum: ['user','admin'], default: 'user' },
+  status: { type: String, maxlength: 50, default: 'Disponible' }, 
+  lastSeen: { type: Date },
   timezone: { type: String, default: 'UTC' },
   language: { type: String, default: 'fr' },
-  amis: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User', default: [] }],
-  createdAt: { type: Date, default: Date.now },
   isVerified: {
-  type: Boolean,
-  default: false
-},
-verifyToken: {
-  type: String
-}
-
+    type: Boolean,
+    default: false
+  },
+  verifyToken: {
+    type: String
+  }
+}, {
+  timestamps: true // Ajout des timestamps ici
 });
 
-// Index pour recherches rapides
 userSchema.index({ email: 1, username: 1 });
 
-
-
-
-const user=mongoose.model('User',userSchema);
-export default user;
+const User = mongoose.model('User', userSchema);
+export default User;
