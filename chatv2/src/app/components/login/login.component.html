@@ -1,20 +1,12 @@
-<div class="h-screen bg-gray-50 flex">
-  
-  <div class="hidden lg:flex flex-1 bg-gradient-to-br from-green-500 to-green-600 items-center justify-center p-12">
-    <div class="text-white text-center max-w-md">
-      <div class="p-4 w-24 h-24 bg-white bg-opacity-20 rounded-3xl shadow-lg mb-8 mx-auto flex items-center justify-center">
-        <img src="Johanchalibert-Mac-Osx-Yosemite-Messages.512.png" width="60" alt="Icon Chat" class="filter brightness-0 invert" />
-      </div>
-      <h1 class="text-4xl font-bold mb-4">FlowCom</h1>
-      <p class="text-lg opacity-90">Connectez-vous pour chatter avec vos amis et collègues en temps réel.</p>
-      <div class="mt-8 flex justify-center space-x-4">
-        <div class="w-3 h-3 bg-white rounded-full opacity-60"></div>
-        <div class="w-3 h-3 bg-white rounded-full opacity-30"></div>
-        <div class="w-3 h-3 bg-white rounded-full opacity-30"></div>
-      </div>
-    </div>
-  </div>
+<div class="flex justify-center items-center min-h-screen bg-gradient-to-br from-gray-900 via-green-900 to-gray-800">
 
+ <app-border-anim>
+<div class="h-[700px] w-[1200px] bg-gray-50 flex z-22">
+ 
+  <div class="hidden lg:flex flex-1 bg-gradient-to-br border-r-green-500  items-center justify-center p-12">
+    <img src="Group Chat-amico.png" alt="">
+  </div>
+  
   <!-- Côté droit - Formulaire -->
   <div class="flex-1 flex items-center justify-center p-8">
     <div class="w-full max-w-md">
@@ -89,7 +81,7 @@
             <p class="text-gray-600 mt-2 text-sm">
               <span *ngIf="showResetPassword">Entrez votre email pour réinitialiser votre mot de passe</span>
               <span *ngIf="!showResetPassword && isLogin">Content de vous revoir !</span>
-              <span *ngIf="!showResetPassword && !isLogin">Rejoignez-nous en 30 secondes</span>
+             
             </p>
           </div>
 
@@ -130,7 +122,7 @@
           </form>
 
           <!-- Formulaire Login/Register -->
-          <form *ngIf="!showResetPassword" (ngSubmit)="onSubmit()" #authForm="ngForm" class="space-y-4">
+          <form *ngIf="!showResetPassword" (ngSubmit)="onSubmit()" #authForm="ngForm" class="space-y-2">
             
             <!-- Section Nom + Username en parallèle -->
             <div *ngIf="!isLogin" class="grid grid-cols-2 gap-3">
@@ -260,21 +252,7 @@
             </div>
 
             <!-- Confirmation password (register only) -->
-            <div *ngIf="!isLogin" class="space-y-2">
-              <label class="block text-sm font-medium text-gray-700">Confirmer le mot de passe *</label>
-              <input
-                type="password"
-                name="confirmPassword"
-                [(ngModel)]="formData.confirmPassword"
-                required
-                #confirmPassword="ngModel"
-                placeholder="••••••••"
-                class="w-full px-3 py-2 bg-gray-50 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500 outline-none transition-colors placeholder-gray-400 text-sm"
-              />
-              <div *ngIf="formData.password !== formData.confirmPassword && confirmPassword.touched" class="text-red-500 text-xs">
-                Les mots de passe ne correspondent pas
-              </div>
-            </div>
+         
 
             <!-- Mot de passe oublié (login only) -->
             <div *ngIf="isLogin" class="text-right">
@@ -291,7 +269,7 @@
             <button
               type="submit"
               [disabled]="authForm.invalid"
-              class="w-full bg-green-500 hover:bg-green-600 text-white font-medium py-3 px-4 rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed mt-4"
+              class="w-full  bg-green-500 hover:bg-green-600 text-white font-medium py-3 px-4 rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed "
             >
               {{ isLogin ? 'Se connecter' : 'Créer mon compte' }}
             </button>
@@ -311,7 +289,7 @@
           </div>
 
           <!-- Footer légal -->
-          <div class="mt-6 pt-4 border-t border-gray-200">
+          <div class="mt-2 pt-4 border-t border-gray-200">
             <p class="text-xs text-gray-500 text-center">
               En continuant, vous acceptez nos 
               <a href="#" class="text-green-600 hover:text-green-800">Conditions</a> 
@@ -323,4 +301,8 @@
       </div>
     </div>
   </div>
+
+</div>
+</app-border-anim>
+
 </div>

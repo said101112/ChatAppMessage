@@ -168,7 +168,7 @@ receiveUser(data: any) {
     this.data.currentUserId = this.userId;
     
    
-    this.socketService.joinRoom(this.Room);
+   
     this.api.id = this.userId;
     console.log(this.userOline);
        
@@ -177,7 +177,11 @@ receiveUser(data: any) {
     console.log('Socket connecté avec ID:', this.userId);
      setTimeout(()=>{
        this.Room = this.generateRoomId();
+       
+     this.socketService.joinRoom(this.Room);
+     console.log("le Room est : ",this.Room);
     },500)
+
     // Chargement des amis
     this.loadAmis();
 

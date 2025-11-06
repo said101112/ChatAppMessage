@@ -19,7 +19,6 @@ export class LoginComponent {
     lastName: '', 
     username: '',
     phone: '',
-    confirmPassword: '',
     email: '',
     password: ''
   };
@@ -46,7 +45,6 @@ resetForm() {
       email: '',
       phone: '',
       password: '',
-      confirmPassword: ''
     };
   }
   data={};
@@ -71,16 +69,14 @@ resetForm() {
      
     };
           console.log('Inscription:', this.formData);
-          if(this.formData.password=== this.formData.confirmPassword){
+         
 
           
           this.api.addUser(this.registrationData).subscribe(res=>{
             console.log('responde de api cest :',res)
             this.showEmailVerification = true;
           });
-        }else{
-          console.log('password et confirmer password nest pas identique .  ')
-        }
+        
         }
       
       }

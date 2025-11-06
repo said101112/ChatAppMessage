@@ -1,0 +1,27 @@
+@property --border-angle {
+  syntax: "<angle>";
+  inherits: true;
+  initial-value: 0turn;
+}
+
+.animate-border {
+  --border-angle: 0turn;
+  background:
+    linear-gradient(45deg, #172033, #172033) padding-box,
+    conic-gradient(from var(--border-angle),
+      #172033,
+      rgba(100, 116, 139, 0.48) 50%,
+      #06cad4 80%,
+      #22d3ee 90%,
+      rgba(100, 116, 139, 0.48) 100%
+    ) border-box;
+  border: 3px solid transparent;
+  border-radius: 1rem;
+  animation: rotate 4s linear infinite;
+}
+
+@keyframes rotate {
+  to {
+    --border-angle: 1turn;
+  }
+}

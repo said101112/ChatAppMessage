@@ -34,7 +34,7 @@ export class InterceptorService implements HttpInterceptor {
     });
 
     return next.handle(cloned).pipe(
-      catchError((error: HttpErrorResponse) => {
+      /* catchError((error: HttpErrorResponse) => {
         if (error.status) {
           switch (error.status) {
             case 401:
@@ -56,9 +56,10 @@ export class InterceptorService implements HttpInterceptor {
         }
         return throwError(() => error);
       }),
+      */
       finalize(() => {
         this.load.hide();
-      })
+      }) 
     );
   }
 

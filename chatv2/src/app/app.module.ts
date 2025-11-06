@@ -12,6 +12,7 @@ import { SidebarComponent } from './components/chat/sidebar/sidebar.component';
 import { ListConversationComponent } from './components/chat/list-conversation/list-conversation.component';
 import { ErrorComponent } from './components/error/error.component';
 import { LoaderComponent } from './shared/loader/loader.component';
+import { BorderAnimComponent } from './components/children/border-anim/border-anim.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -20,7 +21,8 @@ import { LoaderComponent } from './shared/loader/loader.component';
     SidebarComponent,
     ListConversationComponent,
     ErrorComponent,
-    LoaderComponent
+    LoaderComponent,
+    BorderAnimComponent
   ],
   imports: [
     HttpClientModule,
