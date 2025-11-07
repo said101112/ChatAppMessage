@@ -66,6 +66,10 @@ export class SocketService {
     console.log('amis a ajouter avec code ',Code);
     this.socket.emit('AddFriend',{id:Id,CodeConnectF:Code});
   }
+  onFriendAdded(callback:any){
+  this.socket.on('friendAdded', callback);
+}
+
   // Déconnexion
   disconnect() {
     if (this.socket) {

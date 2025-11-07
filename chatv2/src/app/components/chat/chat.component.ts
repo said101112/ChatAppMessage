@@ -184,7 +184,11 @@ receiveUser(data: any) {
 
     // Chargement des amis
     this.loadAmis();
-
+this.socketService.onFriendAdded( (data:any)=>{
+       this.showToast("✅ Nouvel ami ajouté !");
+       console.log(data);
+       this.loadAmis(); // refresh la liste amis
+   });
     // Écoute des nouveaux messages
     this.socketService.onNewMessage((message) => {
       console.log('📩 Nouveau message reçu :', message);
@@ -201,8 +205,7 @@ receiveUser(data: any) {
         // Forcer la détection de changement
         this.cdr.detectChanges();
 
-        // Attendre que le DOM soit mis à jour avant de scroller
-        setTimeout(() => this.scrollToBottom(), 100);
+        this.showToast("📩 Nouveau message reçu !");
       }
 
       // Recharge amis (badges, derniers msg, etc.)
@@ -332,6 +335,12 @@ receiveUser(data: any) {
 }
 
 
+toastMessage: string = '';
+
+showToast(msg: string) {
+  this.toastMessage = msg;
+  setTimeout(() => this.toastMessage = '', 2500); // auto remove
+}
 
 
 

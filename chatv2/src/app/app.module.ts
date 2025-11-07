@@ -13,6 +13,7 @@ import { ListConversationComponent } from './components/chat/list-conversation/l
 import { ErrorComponent } from './components/error/error.component';
 import { LoaderComponent } from './shared/loader/loader.component';
 import { BorderAnimComponent } from './components/children/border-anim/border-anim.component';
+import { ToastComponent } from './shared/toast/toast.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -22,7 +23,8 @@ import { BorderAnimComponent } from './components/children/border-anim/border-an
     ListConversationComponent,
     ErrorComponent,
     LoaderComponent,
-    BorderAnimComponent
+    BorderAnimComponent,
+    ToastComponent
   ],
   imports: [
     HttpClientModule,
