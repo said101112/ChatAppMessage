@@ -4,21 +4,30 @@ services:
     ports:
       - "4200:4200"
     develop:
-      watch: 
-      - action: sync
-        path: ./chatv2
-        target: /app
-        ignore: node_modules/
-      - action: rebuild
-        path: ./chatv2/package.json
+      watch:
+        - action: sync
+          path: ./chatv2
+          target: /app
+          ignore: 
+            - node_modules/
+        - action: rebuild
+          path: ./chatv2/package.json
     depends_on:
       - backend
-    
 
   backend:
     build: ./back/backend
     ports:
       - "3000:3000"
+    develop:
+      watch:
+        - action: sync
+          path: ./back/backend
+          target: /app
+          ignore: 
+            - node_modules/
+        - action: rebuild
+          path: ./back/backend/package.json
     environment:
       - MONGO_URL=mongodb://db:27017/FLOWCOM
     depends_on:

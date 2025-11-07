@@ -123,4 +123,21 @@ export class SidebarComponent implements OnInit {
   goToDashboard() {
     console.log('Retour au dashboard');
   }
+
+
+
+
+  copied = false;
+
+copyCode() {
+  const code = this.userProfil.ConnectCode;
+  if (code) {
+    navigator.clipboard.writeText(code).then(() => {
+      this.copied = true;
+      setTimeout(() => {
+        this.copied = false;
+      }, 2000);
+    });
+  }
+}
 }

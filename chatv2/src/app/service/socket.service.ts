@@ -62,7 +62,10 @@ export class SocketService {
     this.socket.emit('sendMessage', {Room,message});
   }
 
-
+  Addf(Id:any,Code:any){
+    console.log('amis a ajouter avec code ',Code);
+    this.socket.emit('AddFriend',{id:Id,CodeConnectF:Code});
+  }
   // Déconnexion
   disconnect() {
     if (this.socket) {

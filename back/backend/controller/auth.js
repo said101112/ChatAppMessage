@@ -57,7 +57,7 @@ export const SignUp = async (req, res) => {
 
    
     const newuser = new user({
-      ConnectCode:await generatedUniqueConnectCode(),
+      ConnectCode: await generatedUniqueConnectCode(),
       username, firstName, lastName, password: hashedpwd, email, phone,
       bio, avatar: '', status: 'Disponible', lastSeen: new Date(), role: 'user',
       timezone: 'Europe/Paris', language: 'fr',
@@ -70,7 +70,7 @@ export const SignUp = async (req, res) => {
     res.status(201).json({
       success:true,
       message: 'Compte créé avec succès',
-      user: { id: newuser._id, username, firstName, lastName, email, phone }
+      user: { id: newuser._id, ConnectCode:newuser.ConnectCode, username, firstName, lastName, email, phone }
     });
 
   } catch (err) {

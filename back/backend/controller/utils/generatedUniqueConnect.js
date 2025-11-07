@@ -1,6 +1,6 @@
 import {customAlphabet} from 'nanoid'
 
-import User from '../../models/user.js'
+import user from '../../models/user.js'
 
 const generateCode =customAlphabet('0123456789',6);
 
@@ -10,7 +10,7 @@ const generatedUniqueConnectCode= async ()=>{
 
     do{
         Code = generateCode();
-        exists = await User.exists({ConnectCode:Code});
+        exists = await user.exists({ConnectCode:Code});
     }while(exists)
 
         return Code;

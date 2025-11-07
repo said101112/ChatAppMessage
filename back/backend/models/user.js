@@ -46,12 +46,16 @@ const userSchema = new mongoose.Schema({
   },
   verifyToken: {
     type: String
-  }
+  },
+  amis: [{
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'User'
+  }]
 }, {
-  timestamps: true // Ajout des timestamps ici
+  timestamps: true 
 });
 
 userSchema.index({ email: 1, username: 1 });
 
-const User = mongoose.model('User', userSchema);
-export default User;
+const user = mongoose.model('User', userSchema);
+export default user;

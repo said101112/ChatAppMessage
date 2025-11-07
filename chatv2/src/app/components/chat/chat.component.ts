@@ -248,26 +248,21 @@ receiveUser(data: any) {
   }
 
   addamis() {
-    this.data.currentUserId = this.userId;
-
-    this.api.addamis(this.data).subscribe({
-      next: () => {
-        this.loadAmis();
+        this.data.currentUserId = this.userId;
+        const code=this.data.input;
         this.data.input = '';
         this.isAdduser = false;
-
+        console.log('ccccccccccccc:',this.data.input)
+        this.socketService.Addf(this.userId,code);
         this.socketService.sendMessage(this.Room,{
           senderId: this.userId,
           text: 'Nouvel ami ajouté',
         });
-      },
-      error: (err) => {
-        console.error('Erreur ajout ami:', err);
-      },
-    });
+        this.loadAmis();
   }
 
-  
+
+
 
   sendMessage() {
     const text = this.inputMessage.trim();
