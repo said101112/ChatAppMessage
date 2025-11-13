@@ -190,28 +190,29 @@ this.socketService.onFriendAdded( (data:any)=>{
        this.loadAmis(); // refresh la liste amis
    });
     // Écoute des nouveaux messages
-    this.socketService.onNewMessage((message) => {
-      console.log('📩 Nouveau message reçu :', message);
+  this.socketService.onNewMessage(({ msg, senderUsername }) => {
+  console.log('📩 Nouveau message reçu :', msg);
 
-      // Vérifie si le message appartient à la conversation ouverte
-      if (
-        this.selectedConversation &&
-        (message.senderId === this.selectedConversation._id ||
-          message.receverId === this.selectedConversation._id)
-      ) {
-        // Ajout du message
-        this.selectedConversation.conversation.push(message);
+  // Vérifie si le message appartient à la conversation ouverte
+  if (
+    this.selectedConversation &&
+    (msg.senderId === this.selectedConversation._id ||
+      msg.receverId === this.selectedConversation._id)
+  ) {
+    // Ajoute le message à la conversation
+    this.selectedConversation.conversation.push(msg);
 
-        // Forcer la détection de changement
-        this.cdr.detectChanges();
+    // Force la mise à jour de l'affichage
+    this.cdr.detectChanges();
 
-        this.showToast("📩 Nouveau message reçu !");
-      }
+    // ✅ Affiche un toast avec le nom d'utilisateur
+    this.showToast(`💬 Nouveau message de ${senderUsername}: ${msg.text}`);
+  }
 
-      // Recharge amis (badges, derniers msg, etc.)
-      this.loadAmis();
-    });
-    
+  // 🔄 Met à jour la liste des amis (badges, derniers messages…)
+  this.loadAmis();
+});
+
        this.socketService.onOnlineUsers((usersId: string[])=>{
              console.log('Users Online',usersId);
              this.userOline=usersId;

@@ -33,14 +33,15 @@ export class SocketService {
   }
 
   // Écouter les nouveaux messages
-  onNewMessage(callback: (msg: any) => void) {
-    this.socket.on('newMessage', (msg) => {
-      console.log('📨 Nouveau message reçu:', msg);
-      
-      callback(msg);
-      
-    });
-  }
+onNewMessage(callback: (data: { msg: any, senderUsername: string }) => void) {
+  this.socket.on('newMessage', (msg: any, senderUsername: string) => {
+    console.log('📨 Nouveau message reçu:', msg);
+    console.log('👤 Envoyé par:', senderUsername);
+
+    callback({ msg, senderUsername });
+  });
+}
+
 
   // Écouter les utilisateurs en ligne
   onOnlineUsers(callback: (userIds: string[]) => void) {

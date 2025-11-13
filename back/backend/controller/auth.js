@@ -100,7 +100,7 @@ export const Signin = async (req, res) => {
     const validPassword = await bcrypt.compare(password, existingUser.password);
     if (!validPassword) return res.status(400).json({ msg: "Mot de passe incorrect." });
 
-    const token = jwt.sign({ id: existingUser._id }, process.env.JWT_SECRET, { expiresIn: "1d" });
+    const token = jwt.sign({ id: existingUser._id , username:existingUser.username }, process.env.JWT_SECRET, { expiresIn: "1d" });
 
     res.cookie('auth_token', token, {
       httpOnly: true,
@@ -231,22 +231,37 @@ export const getAllmsgs = async (req, res) => {
 export const SendMessage = async (req, res) => {
   try {
     const { receverId } = req.params;
-    const senderId = req.user._id;
+    const senderId = req.user._id; // vient du middleware verifyToken
     let { text } = req.body;
 
     text = sanitizeHtml(text || '', { allowedTags: [], allowedAttributes: {} });
-    if (!text || text.trim() === '') return res.status(400).json({ msg: 'Message vide non autorisé' });
+    if (!text || text.trim() === '') {
+      return res.status(400).json({ msg: 'Message vide non autorisé' });
+    }
 
-    const newMsg = await message.create({ senderId, receverId, text, status: 'sent', timestamp: Date.now() });
+    const newMsg = await message.create({
+      senderId,
+      receverId,
+      text,
+      status: 'sent',
+      timestamp: Date.now(),
+    });
+
     res.status(200).json({ msg: 'Message envoyé avec succès', message: newMsg });
 
     const receiverSocketId = onlineUser[receverId];
+
+    // 💡 Vérifie si l'expéditeur est bien défini
+    console.log('🧠 Utilisateur connecté:', req.user);
+
     if (receiverSocketId) {
-      io.to(receiverSocketId).emit('newMessage', newMsg);
+      io.to(receiverSocketId).emit('newMessage', newMsg, req.user.username);
       newMsg.status = 'delivered';
       await newMsg.save();
     }
   } catch (err) {
+    console.error(err);
     res.status(500).json({ msg: 'Erreur serveur lors de l’envoi du message' });
   }
 };
+
