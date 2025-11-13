@@ -94,6 +94,7 @@ export const Signin = async (req, res) => {
     password = password.trim();
 
     const existingUser = await user.findOne({ email });
+    console.log('current user is :' , existingUser);
     if (!existingUser) return res.status(400).json({ msg: "Email n'existe pas." });
     if (!existingUser.isVerified) return res.status(403).send('Veuillez vérifier votre email avant de vous connecter.');
 

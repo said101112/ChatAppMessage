@@ -9,8 +9,6 @@ export const protect =async (req, res, next) => {
     }
 
     const decoded = jwt.verify(token,process.env.JWT_SECRET );
-     const currentUser = await user.findById(decoded.id).select('username _id');
-    if (!currentUser) return res.status(401).json({ message: "Utilisateur introuvable" });
     req.user = { _id: decoded.id ,username:decoded.username};
     next();
   } catch (error) {
